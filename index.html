@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чернобыль — Последствия для Беларуси</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Roboto:wght@300;400;500&family=Montserrat:wght@600;700&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #0a0a0a;
+            background-image: radial-gradient(ellipse at 50% 50%, rgba(20, 10, 0, 0.9) 0%, #050505 100%);
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .particle {
+            position: absolute; width: 2px; height: 2px;
+            background: rgba(255, 100, 0, 0.3); border-radius: 50%;
+            animation: float 15s linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        .wrapper {
+            position: relative; z-index: 1;
+            display: flex; flex-direction: column; align-items: center;
+            width: 100%;
+        }
+
+        .label {
+            color: #c4a882; font-family: 'Playfair Display', serif;
+            font-size: 1.2rem; margin-bottom: 30px;
+            text-transform: uppercase; letter-spacing: 5px;
+            opacity: 0; animation: fadeDown 1s ease 0.5s forwards;
+        }
+        @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .scene {
+            perspective: 2500px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            overflow: visible;
+        }
+
+        .accordion-booklet {
+            position: relative;
+            width: 340px;
+            height: 600px;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: transform 1.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .accordion-booklet.open {
+            transform: translateX(-850px);
+        }
+
+        /* Оверлей */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            cursor: pointer;
+        }
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .overlay-content {
+            width: 380px;
+            height: 640px;
+            background: linear-gradient(170deg, #f5efe5 0%, #e8ddcf 100%);
+            border-radius: 12px;
+            padding: 35px 30px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            overflow-y: auto;
+        }
+        .overlay.active .overlay-content {
+            transform: scale(1);
+        }
+        .overlay-close {
+            position: absolute;
+            top: 12px; right: 16px;
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            color: #8b0000;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            z-index: 10;
+        }
+        .overlay-close:hover { background: rgba(139, 0, 0, 0.2); }
+        .overlay-hint {
+            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            color: rgba(0,0,0,0.25); font-size: 0.65rem; letter-spacing: 1px;
+        }
+
+        .overlay-content .sec-title {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700;
+            color: #2a1a10; margin-bottom: 20px; padding-bottom: 12px;
+            border-bottom: 2px solid rgba(139, 0, 0, 0.2); position: relative;
+        }
+        .overlay-content .sec-title::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 50px; height: 2px; background: #8b0000; }
+        .overlay-content .text { font-size: 0.95rem; line-height: 1.75; color: #444; text-align: justify; margin-bottom: 15px; }
+        .overlay-content .highlight { color: #8b0000; font-weight: 600; }
+        .overlay-content .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+        .overlay-content .stat-box { background: rgba(139,0,0,0.06); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid rgba(139,0,0,0.1); }
+        .overlay-content .stat-num { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #8b0000; font-size: 1.6rem; display: block; margin-bottom: 4px; }
+        .overlay-content .stat-lbl { font-size: 0.75rem; color: #666; line-height: 1.2; }
+        .overlay-content .img-container { width: 100%; height: 200px; margin: 15px 0; border-radius: 8px; overflow: hidden; position: relative; background: #2a1f1a; box-shadow: 0 3px 15px rgba(0,0,0,0.3); }
+        .overlay-content .img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .overlay-content .img-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.8); font-size: 0.7rem; padding: 6px 10px; text-align: center; }
+        .overlay-content .quote-box { background: rgba(139,0,0,0.05); border-left: 3px solid #8b0000; padding: 15px 18px; margin: 18px 0; font-style: italic; font-size: 0.9rem; color: #5a4035; }
+        .overlay-content .tl-item { margin-bottom: 15px; border-left: 3px solid #8b0000; padding-left: 15px; }
+        .overlay-content .tl-year { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.9rem; color: #8b0000; margin-bottom: 4px; }
+        .overlay-content .tl-desc { font-size: 0.85rem; color: #555; line-height: 1.5; }
+
+        .hint {
+            position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%);
+            color: rgba(196, 168, 130, 0.4); font-size: 0.7rem; letter-spacing: 2px;
+            text-transform: uppercase; white-space: nowrap;
+            animation: pulse 2s infinite; pointer-events: none;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
+
+        .panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 340px;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+        }
+        .panel.clickable { cursor: pointer; }
+        .panel.clickable:hover { box-shadow: 0 5px 35px rgba(139, 0, 0, 0.3); }
+
+        /* Позиции в закрытом состоянии */
+        .panel:nth-child(1) { z-index: 6; transform: rotateY(0deg); }
+        .panel:nth-child(2) { z-index: 5; transform: rotateY(0deg); }
+        .panel:nth-child(3) { z-index: 4; transform: rotateY(0deg); }
+        .panel:nth-child(4) { z-index: 3; transform: rotateY(0deg); }
+        .panel:nth-child(5) { z-index: 2; transform: rotateY(0deg); }
+        .panel:nth-child(6) { z-index: 1; transform: rotateY(0deg); }
+
+        /* Открытие гармошки */
+        .accordion-booklet.open .panel:nth-child(1) { transform: rotateY(0deg) translateX(0); }
+        .accordion-booklet.open .panel:nth-child(2) { transform: rotateY(0deg) translateX(340px); }
+        .accordion-booklet.open .panel:nth-child(3) { transform: rotateY(0deg) translateX(680px); }
+        .accordion-booklet.open .panel:nth-child(4) { transform: rotateY(0deg) translateX(1020px); }
+        .accordion-booklet.open .panel:nth-child(5) { transform: rotateY(0deg) translateX(1360px); }
+        .accordion-booklet.open .panel:nth-child(6) { transform: rotateY(0deg) translateX(1700px); }
+
+        .face {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            backface-visibility: hidden; -webkit-backface-visibility: hidden;
+            overflow: hidden;
+        }
+
+        .paper {
+            background: linear-gradient(170deg, #f5efe5 0%, #e8ddcf 100%);
+            padding: 25px; height: 100%; position: relative;
+        }
+        .cover-face {
+            background: linear-gradient(160deg, #1a1a1a 0%, #0f0b08 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 30px; height: 100%;
+            border: 1px solid rgba(196, 168, 130, 0.15);
+        }
+
+        .sec-title {
+            font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700;
+            color: #2a1a10; margin-bottom: 15px; padding-bottom: 10px;
+            border-bottom: 2px solid rgba(139, 0, 0, 0.2); position: relative;
+        }
+        .sec-title::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 40px; height: 2px; background: #8b0000; }
+
+        .text { font-size: 0.8rem; line-height: 1.65; color: #444; text-align: justify; margin-bottom: 12px; }
+        .highlight { color: #8b0000; font-weight: 600; }
+
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .stat-box { background: rgba(139,0,0,0.06); padding: 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(139,0,0,0.1); }
+        .stat-num { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #8b0000; font-size: 1.3rem; display: block; margin-bottom: 3px; }
+        .stat-lbl { font-size: 0.65rem; color: #666; line-height: 1.2; }
+
+        .tl-item { margin-bottom: 12px; border-left: 3px solid #8b0000; padding-left: 12px; }
+        .tl-year { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem; color: #8b0000; margin-bottom: 3px; }
+        .tl-desc { font-size: 0.75rem; color: #555; line-height: 1.4; }
+
+        .img-container {
+            width: 100%; height: 140px; margin: 12px 0; border-radius: 6px;
+            overflow: hidden; position: relative; background: #2a1f1a;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .img-container:hover img { transform: scale(1.05); }
+        .img-caption {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.8);
+            font-size: 0.65rem; padding: 5px 8px; text-align: center;
+        }
+
+        .cover-border { position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 1px solid rgba(196, 168, 130, 0.2); pointer-events: none; }
+        .cover-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: #c4a882; text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; line-height: 1.1; }
+        .cover-sub { color: rgba(196, 168, 130, 0.5); font-style: italic; font-size: 0.95rem; margin-bottom: 30px; }
+        .year-big { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 4.5rem; color: rgba(196, 168, 130, 0.1); position: absolute; bottom: 70px; }
+        .rad-icon { width: 70px; height: 70px; margin-bottom: 25px; animation: glow 3s infinite; }
+        @keyframes glow { 0%,100%{opacity:0.6; filter:drop-shadow(0 0 8px rgba(255,100,0,0.3));} 50%{opacity:0.95; filter:drop-shadow(0 0 20px rgba(255,100,0,0.5));} }
+
+        .quote-box {
+            background: rgba(139,0,0,0.05); border-left: 3px solid #8b0000;
+            padding: 12px 15px; margin: 15px 0; font-style: italic;
+            font-size: 0.8rem; color: #5a4035;
+        }
+
+        .controls { margin-top: 40px; opacity: 0; transition: opacity 0.5s; pointer-events: none; height: 30px; }
+        .controls.visible { opacity: 1; pointer-events: all; }
+        .btn-reload {
+            background: rgba(196, 168, 130, 0.1); border: 1px solid rgba(196, 168, 130, 0.3);
+            color: #c4a882; padding: 10px 28px; border-radius: 25px; cursor: pointer;
+            font-size: 0.75rem; letter-spacing: 1px; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-reload:hover { background: rgba(196, 168, 130, 0.25); }
+
+        @media (max-width: 1200px) { .accordion-booklet.open { transform: translateX(-600px); } }
+        @media (max-width: 900px) { .accordion-booklet.open { transform: translateX(-400px); } }
+        @media (max-width: 600px) {
+            .accordion-booklet { width: 280px; height: 500px; }
+            .panel { width: 280px; }
+            .accordion-booklet.open { transform: translateX(-700px); }
+            .accordion-booklet.open .panel:nth-child(2) { transform: rotateY(0deg) translateX(280px); }
+            .accordion-booklet.open .panel:nth-child(3) { transform: rotateY(0deg) translateX(560px); }
+            .accordion-booklet.open .panel:nth-child(4) { transform: rotateY(0deg) translateX(840px); }
+            .accordion-booklet.open .panel:nth-child(5) { transform: rotateY(0deg) translateX(1120px); }
+            .accordion-booklet.open .panel:nth-child(6) { transform: rotateY(0deg) translateX(1400px); }
+            .overlay-content { width: 320px; height: 540px; padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="particles" id="particles"></div>
+
+    <!-- Оверлей для увеличения -->
+    <div class="overlay" id="overlay" onclick="closeOverlay()">
+        <div class="overlay-content" onclick="event.stopPropagation()">
+            <div class="overlay-close" onclick="closeOverlay()">✕</div>
+            <div id="overlayBody"></div>
+            <div class="overlay-hint">нажмите вне окна или на ✕ чтобы закрыть</div>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="label">Интерактивный буклет</div>
+
+        <div class="scene">
+            <div class="accordion-booklet" id="booklet" onclick="handleBookletClick(event)">
+
+                <!-- ПАНЕЛЬ 1: ОБЛОЖКА -->
+                <div class="panel" data-cover="true">
+                    <div class="face front cover-face">
+                        <div class="cover-border"></div>
+                        <svg class="rad-icon" viewBox="0 0 100 100" fill="none">
+                            <circle cx="50" cy="50" r="10" stroke="#c4a882" stroke-width="2" fill="rgba(196,168,130,0.1)"/>
+                            <path d="M50 40 L50 18 A32 32 0 0 1 67 28 L55 41" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="1.5"/>
+                            <path d="M59.5 55 L78 65 A32 32 0 0 1 65 74 L53 61" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="1.5"/>
+                            <path d="M40.5 55 L22 65 A32 32 0 0 0 35 74 L47 61" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="1.5"/>
+                        </svg>
+                        <div class="cover-title">Чернобыль</div>
+                        <div class="cover-sub">Последствия для Беларуси</div>
+                        <div class="year-big">1986</div>
+                    </div>
+                </div>
+
+                <!-- ПАНЕЛЬ 2: МАСШТАБ -->
+                <div class="panel clickable" data-panel="scale">
+                    <div class="face front paper">
+                        <div class="sec-title">Масштаб катастрофы</div>
+                        <div class="img-container">
+                            <!-- ВСТАВЬТЕ КАРТИНКУ 1 -->
+                            <img src="images/contamination-zone.jpg" alt="Зона загрязнения">
+                            <div class="img-caption">Зона загрязнения</div>
+                        </div>
+                        <p class="text">Беларусь пострадала больше всех — на её территорию пришлось <span class="highlight">70%</span> всех радиоактивных осадков.</p>
+                        <div class="stat-grid">
+                            <div class="stat-box"><span class="stat-num">23%</span><span class="stat-lbl">территории заражено</span></div>
+                            <div class="stat-box"><span class="stat-num">137K</span><span class="stat-lbl">эвакуировано</span></div>
+                            <div class="stat-box"><span class="stat-num">3 700+</span><span class="stat-lbl">населённых пунктов</span></div>
+                            <div class="stat-box"><span class="stat-num">2M+</span><span class="stat-lbl">пострадавших</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ПАНЕЛЬ 3: ЗДОРОВЬЕ -->
+                <div class="panel clickable" data-panel="health">
+                    <div class="face front paper">
+                        <div class="sec-title">Удар по здоровью</div>
+                        <div class="img-container">
+                            <!-- ВСТАВЬТЕ КАРТИНКУ 2 -->
+                            <img src="images/medical-consequences.jpg" alt="Медицина">
+                            <div class="img-caption">Медицинские последствия</div>
+                        </div>
+                        <p class="text">Катастрофа нанесла колоссальный удар по здоровью населения. Особенно пострадали дети.</p>
+                        <div class="stat-grid">
+                            <div class="stat-box"><span class="stat-num">↑30×</span><span class="stat-lbl">рак щитовидной железы у детей</span></div>
+                            <div class="stat-box"><span class="stat-num">↑40%</span><span class="stat-lbl">общая заболеваемость</span></div>
+                        </div>
+                        <p class="text">Основные заболевания: рак щитовидной железы, лейкемия, сердечно-сосудистые заболевания, психические расстройства.</p>
+                    </div>
+                </div>
+
+                <!-- ПАНЕЛЬ 4: ЭКОЛОГИЯ -->
+                <div class="panel clickable" data-panel="ecology">
+                    <div class="face front paper">
+                        <div class="sec-title">Экологические последствия</div>
+                        <div class="img-container">
+                            <!-- ВСТАВЬТЕ КАРТИНКУ 3 -->
+                            <img src="images/red-forest.jpg" alt="Рыжий лес">
+                            <div class="img-caption">Рыжий лес</div>
+                        </div>
+                        <p class="text">Леса стали основными «накопителями» радионуклидов. Цезий-137 и стронций-90 накапливаются в деревьях, грибах, ягодах.</p>
+                        <div class="stat-grid">
+                            <div class="stat-box"><span class="stat-num">4 300</span><span class="stat-lbl">км² лесов загрязнено</span></div>
+                            <div class="stat-box"><span class="stat-num">30 лет</span><span class="stat-lbl">период полураспада Cs-137</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ПАНЕЛЬ 5: ЛИКВИДАЦИЯ -->
+                <div class="panel clickable" data-panel="liquidation">
+                    <div class="face front paper">
+                        <div class="sec-title">Ликвидаторы</div>
+                        <div class="img-container">
+                            <!-- ВСТАВЬТЕ КАРТИНКУ 4 -->
+                            <img src="images/liquidators.jpg" alt="Ликвидаторы">
+                            <div class="img-caption">Ликвидаторы последствий</div>
+                        </div>
+                        <p class="text">Более <span class="highlight">500 000 человек</span> участвовали в ликвидации последствий катастрофы.</p>
+                        <p class="text">Военные, шахтёры, пожарные, учёные, врачи — все они рисковали жизнью, чтобы остановить распространение радиации.</p>
+                        <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов.»</div>
+                    </div>
+                </div>
+
+                <!-- ПАНЕЛЬ 6: ПАМЯТЬ -->
+                <div class="panel clickable" data-panel="memory">
+                    <div class="face front paper">
+                        <div class="sec-title">Память и уроки</div>
+                        <div class="img-container">
+                            <!-- ВСТАВЬТЕ КАРТИНКУ 5 -->
+                            <img src="images/memory.jpg" alt="Память">
+                            <div class="img-caption">День памяти</div>
+                        </div>
+                        <p class="text">Чернобыль изменил Беларусь навсегда. Но вместе с болью пришла и стойкость.</p>
+                        <p class="text">Сегодня действуют современные программы реабилитации территорий, мониторинга здоровья и поддержки пострадавших семей.</p>
+                        <div class="stat-grid">
+                            <div class="stat-box"><span class="stat-num">$17B+</span><span class="stat-lbl">потрачено на ликвидацию</span></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="controls" id="controls">
+            <button class="btn-reload" onclick="closeBooklet()">Закрыть буклет</button>
+        </div>
+    </div>
+
+    <script>
+        const booklet = document.getElementById('booklet');
+        const controls = document.getElementById('controls');
+        const overlay = document.getElementById('overlay');
+        const overlayBody = document.getElementById('overlayBody');
+        let isOpen = false;
+        let isOverlayOpen = false;
+
+        // Данные для оверлея (только лицевая сторона)
+        const panelData = {
+            scale: `
+                <div class="sec-title">Масштаб катастрофы</div>
+                <div class="img-container"><img src="images/contamination-zone.jpg" alt="Загрязнение"><div class="img-caption">Зона загрязнения</div></div>
+                <p class="text">26 апреля 1986 года взрыв на Чернобыльской АЭС стал крупнейшей техногенной катастрофой в истории человечества. Беларусь пострадала больше всех — на её территорию пришлось <span class="highlight">70%</span> всех радиоактивных осадков.</p>
+                <div class="stat-grid">
+                    <div class="stat-box"><span class="stat-num">23%</span><span class="stat-lbl">территории заражено</span></div>
+                    <div class="stat-box"><span class="stat-num">137K</span><span class="stat-lbl">эвакуировано</span></div>
+                    <div class="stat-box"><span class="stat-num">3 700+</span><span class="stat-lbl">населённых пунктов</span></div>
+                    <div class="stat-box"><span class="stat-num">2M+</span><span class="stat-lbl">пострадавших</span></div>
+                </div>
+            `,
+            health: `
+                <div class="sec-title">Удар по здоровью</div>
+                <div class="img-container"><img src="images/medical-consequences.jpg" alt="Медицина"><div class="img-caption">Медицинские последствия</div></div>
+                <p class="text">Катастрофа нанесла колоссальный удар по здоровью населения Беларуси. Особенно пострадали дети, которые были наиболее уязвимы к воздействию радиации.</p>
+                <div class="stat-grid">
+                    <div class="stat-box"><span class="stat-num">↑30×</span><span class="stat-lbl">рак щитовидной железы у детей</span></div>
+                    <div class="stat-box"><span class="stat-num">↑40%</span><span class="stat-lbl">общая заболеваемость</span></div>
+                </div>
+                <p class="text">Основные заболевания: рак щитовидной железы, лейкемия, сердечно-сосудистые заболевания, психические расстройства, снижение иммунитета.</p>
+            `,
+            ecology: `
+                <div class="sec-title">Экологические последствия</div>
+                <div class="img-container"><img src="images/red-forest.jpg" alt="Рыжий лес"><div class="img-caption">Рыжий лес</div></div>
+                <p class="text">Леса стали основными «накопителями» радионуклидов. Цезий-137 и стронций-90 накапливаются в деревьях, грибах, ягодах, почве.</p>
+                <div class="stat-grid">
+                    <div class="stat-box"><span class="stat-num">4 300</span><span class="stat-lbl">км² лесов загрязнено</span></div>
+                    <div class="stat-box"><span class="stat-num">30 лет</span><span class="stat-lbl">период полураспада Cs-137</span></div>
+                </div>
+                <p class="text">Грибы и ягоды до сих пор могут содержать опасные уровни радионуклидов. Запрещён сбор грибов и ягод в загрязнённых зонах.</p>
+            `,
+            liquidation: `
+                <div class="sec-title">Ликвидаторы</div>
+                <div class="img-container"><img src="images/liquidators.jpg" alt="Ликвидаторы"><div class="img-caption">Ликвидаторы последствий</div></div>
+                <p class="text">Более <span class="highlight">500 000 человек</span> из всех республик СССР участвовали в ликвидации последствий катастрофы.</p>
+                <p class="text">Военные, шахтёры, пожарные, учёные, врачи, строители — все они рисковали жизнью и здоровьем, чтобы остановить распространение радиации.</p>
+                <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов. Их жертва спасла миллионы жизней.»</div>
+            `,
+            memory: `
+                <div class="sec-title">Память и уроки</div>
+                <div class="img-container"><img src="images/memory.jpg" alt="Память"><div class="img-caption">День памяти</div></div>
+                <p class="text">Чернобыль изменил Беларусь навсегда. Но вместе с болью пришла и стойкость. Тысячи ликвидаторов, учёных, врачей и волонтёров ежедневно работают над смягчением последствий.</p>
+                <div class="stat-grid">
+                    <div class="stat-box"><span class="stat-num">$17B+</span><span class="stat-lbl">потрачено на ликвидацию</span></div>
+                </div>
+                <p class="text">Беларусь продолжает работу по реабилитации загрязнённых территорий, мониторингу здоровья населения и сохранению памяти о трагедии.</p>
+            `
+        };
+
+        function handleBookletClick(event) {
+            const panel = event.target.closest('.panel');
+            if (!panel) return;
+
+            if (panel.dataset.cover === 'true') {
+                if (isOpen) closeBooklet();
+                else openBooklet();
+                return;
+            }
+
+            if (!isOpen) {
+                openBooklet();
+            } else if (panel.classList.contains('clickable')) {
+                showOverlay(panel.dataset.panel);
+            }
+        }
+
+        function openBooklet() {
+            isOpen = true;
+            booklet.classList.add('open');
+            controls.classList.add('visible');
+        }
+
+        function closeBooklet() {
+            if (isOverlayOpen) closeOverlay();
+            setTimeout(() => {
+                isOpen = false;
+                booklet.classList.remove('open');
+                controls.classList.remove('visible');
+            }, 50);
+        }
+
+        function showOverlay(panelType) {
+            const content = panelData[panelType];
+            if (!content) return;
+            overlayBody.innerHTML = content;
+            overlay.classList.add('active');
+            isOverlayOpen = true;
+        }
+
+        function closeOverlay() {
+            overlay.classList.remove('active');
+            isOverlayOpen = false;
+        }
+
+        (function(){
+            const c = document.getElementById('particles');
+            for(let i=0; i<40; i++){
+                let p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random()*100 + '%';
+                p.style.animationDuration = (8 + Math.random()*15) + 's';
+                p.style.animationDelay = Math.random()*10 + 's';
+                c.appendChild(p);
+            }
+        })();
+    </script>
+</body>
+</html>
