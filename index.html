@@ -70,7 +70,6 @@
             transform: translateX(-850px);
         }
 
-        /* Оверлей */
         .overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -84,38 +83,23 @@
             transition: opacity 0.4s ease;
             cursor: pointer;
         }
-        .overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
+        .overlay.active { opacity: 1; pointer-events: all; }
         .overlay-content {
-            width: 380px;
-            height: 640px;
+            width: 380px; height: 640px;
             background: linear-gradient(170deg, #f5efe5 0%, #e8ddcf 100%);
-            border-radius: 12px;
-            padding: 35px 30px;
-            position: relative;
+            border-radius: 12px; padding: 35px 30px; position: relative;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             transform: scale(0.8);
             transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             overflow-y: auto;
         }
-        .overlay.active .overlay-content {
-            transform: scale(1);
-        }
+        .overlay.active .overlay-content { transform: scale(1); }
         .overlay-close {
-            position: absolute;
-            top: 12px; right: 16px;
-            background: rgba(139, 0, 0, 0.1);
-            border: 1px solid rgba(139, 0, 0, 0.2);
-            color: #8b0000;
-            width: 32px; height: 32px;
-            border-radius: 50%;
+            position: absolute; top: 12px; right: 16px;
+            background: rgba(139, 0, 0, 0.1); border: 1px solid rgba(139, 0, 0, 0.2);
+            color: #8b0000; width: 32px; height: 32px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: 0.3s;
-            z-index: 10;
+            cursor: pointer; font-size: 1.1rem; transition: 0.3s; z-index: 10;
         }
         .overlay-close:hover { background: rgba(139, 0, 0, 0.2); }
         .overlay-hint {
@@ -152,11 +136,8 @@
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
 
         .panel {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 340px;
-            height: 100%;
+            position: absolute; top: 0; left: 0;
+            width: 340px; height: 100%;
             transform-style: preserve-3d;
             transition: transform 1.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s;
             box-shadow: 0 5px 25px rgba(0,0,0,0.4);
@@ -164,7 +145,6 @@
         .panel.clickable { cursor: pointer; }
         .panel.clickable:hover { box-shadow: 0 5px 35px rgba(139, 0, 0, 0.3); }
 
-        /* Позиции в закрытом состоянии */
         .panel:nth-child(1) { z-index: 6; transform: rotateY(0deg); }
         .panel:nth-child(2) { z-index: 5; transform: rotateY(0deg); }
         .panel:nth-child(3) { z-index: 4; transform: rotateY(0deg); }
@@ -172,7 +152,6 @@
         .panel:nth-child(5) { z-index: 2; transform: rotateY(0deg); }
         .panel:nth-child(6) { z-index: 1; transform: rotateY(0deg); }
 
-        /* Открытие гармошки */
         .accordion-booklet.open .panel:nth-child(1) { transform: rotateY(0deg) translateX(0); }
         .accordion-booklet.open .panel:nth-child(2) { transform: rotateY(0deg) translateX(340px); }
         .accordion-booklet.open .panel:nth-child(3) { transform: rotateY(0deg) translateX(680px); }
@@ -195,7 +174,52 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             padding: 30px; height: 100%;
             border: 1px solid rgba(196, 168, 130, 0.15);
+            position: relative;
         }
+
+        /* === ОБНОВЛЁННАЯ ОБЛОЖКА === */
+        .cover-top-year {
+            position: absolute; top: 35px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 1.8rem; color: rgba(196, 168, 130, 0.35);
+            letter-spacing: 8px;
+        }
+        .cover-bottom-year {
+            position: absolute; bottom: 35px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+            font-size: 1.8rem; color: rgba(196, 168, 130, 0.35);
+            letter-spacing: 8px;
+        }
+        .cover-big-forty {
+            position: absolute;
+            font-family: 'Montserrat', sans-serif; font-weight: 900;
+            font-size: 10rem; line-height: 1;
+            color: rgba(196, 168, 130, 0.06);
+            z-index: 1;
+            user-select: none;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .cover-center-group {
+            position: relative; z-index: 2;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .cover-border { position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 1px solid rgba(196, 168, 130, 0.15); pointer-events: none; }
+        .cover-title {
+            font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900;
+            color: #c4a882; text-align: center; text-transform: uppercase;
+            letter-spacing: 2px; margin-bottom: 8px; line-height: 1.1;
+        }
+        .cover-sub {
+            color: rgba(196, 168, 130, 0.5); font-style: italic;
+            font-size: 0.95rem; margin-bottom: 10px;
+        }
+        .cover-years-dash {
+            color: rgba(196, 168, 130, 0.3); font-size: 0.8rem;
+            letter-spacing: 4px;
+        }
+        .rad-icon { width: 70px; height: 70px; margin-bottom: 15px; animation: glow 3s infinite; }
+        @keyframes glow { 0%,100%{opacity:0.6; filter:drop-shadow(0 0 8px rgba(255,100,0,0.3));} 50%{opacity:0.95; filter:drop-shadow(0 0 20px rgba(255,100,0,0.5));} }
 
         .sec-title {
             font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700;
@@ -229,13 +253,6 @@
             font-size: 0.65rem; padding: 5px 8px; text-align: center;
         }
 
-        .cover-border { position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 1px solid rgba(196, 168, 130, 0.2); pointer-events: none; }
-        .cover-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: #c4a882; text-align: center; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; line-height: 1.1; }
-        .cover-sub { color: rgba(196, 168, 130, 0.5); font-style: italic; font-size: 0.95rem; margin-bottom: 30px; }
-        .year-big { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 4.5rem; color: rgba(196, 168, 130, 0.1); position: absolute; bottom: 70px; }
-        .rad-icon { width: 70px; height: 70px; margin-bottom: 25px; animation: glow 3s infinite; }
-        @keyframes glow { 0%,100%{opacity:0.6; filter:drop-shadow(0 0 8px rgba(255,100,0,0.3));} 50%{opacity:0.95; filter:drop-shadow(0 0 20px rgba(255,100,0,0.5));} }
-
         .quote-box {
             background: rgba(139,0,0,0.05); border-left: 3px solid #8b0000;
             padding: 12px 15px; margin: 15px 0; font-style: italic;
@@ -263,6 +280,8 @@
             .accordion-booklet.open .panel:nth-child(5) { transform: rotateY(0deg) translateX(1120px); }
             .accordion-booklet.open .panel:nth-child(6) { transform: rotateY(0deg) translateX(1400px); }
             .overlay-content { width: 320px; height: 540px; padding: 25px 20px; }
+            .cover-big-forty { font-size: 7rem; }
+            .cover-top-year, .cover-bottom-year { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -270,7 +289,6 @@
 
     <div class="particles" id="particles"></div>
 
-    <!-- Оверлей для увеличения -->
     <div class="overlay" id="overlay" onclick="closeOverlay()">
         <div class="overlay-content" onclick="event.stopPropagation()">
             <div class="overlay-close" onclick="closeOverlay()">✕</div>
@@ -289,15 +307,28 @@
                 <div class="panel" data-cover="true">
                     <div class="face front cover-face">
                         <div class="cover-border"></div>
-                        <svg class="rad-icon" viewBox="0 0 100 100" fill="none">
-                            <circle cx="50" cy="50" r="10" stroke="#c4a882" stroke-width="2" fill="rgba(196,168,130,0.1)"/>
-                            <path d="M50 40 L50 18 A32 32 0 0 1 67 28 L55 41" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="1.5"/>
-                            <path d="M59.5 55 L78 65 A32 32 0 0 1 65 74 L53 61" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="1.5"/>
-                            <path d="M40.5 55 L22 65 A32 32 0 0 0 35 74 L47 61" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="1.5"/>
-                        </svg>
-                        <div class="cover-title">Чернобыль</div>
-                        <div class="cover-sub">Последствия для Беларуси</div>
-                        <div class="year-big">1986</div>
+
+                        <!-- Год сверху -->
+                        <div class="cover-top-year">1986</div>
+
+                        <!-- Большое число 40 на заднем плане -->
+                        <div class="cover-big-forty">40</div>
+
+                        <!-- Центральная группа -->
+                        <div class="cover-center-group">
+                            <svg class="rad-icon" viewBox="0 0 100 100" fill="none">
+                                <circle cx="50" cy="50" r="10" stroke="#c4a882" stroke-width="2" fill="rgba(196,168,130,0.1)"/>
+                                <path d="M50 40 L50 18 A32 32 0 0 1 67 28 L55 41" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="1.5"/>
+                                <path d="M59.5 55 L78 65 A32 32 0 0 1 65 74 L53 61" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="1.5"/>
+                                <path d="M40.5 55 L22 65 A32 32 0 0 0 35 74 L47 61" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="1.5"/>
+                            </svg>
+                            <div class="cover-title">Чернобыль</div>
+                            <div class="cover-sub">Последствия для Беларуси</div>
+                            <div class="cover-years-dash">—</div>
+                        </div>
+
+                        <!-- Год снизу -->
+                        <div class="cover-bottom-year">2026</div>
                     </div>
                 </div>
 
@@ -306,7 +337,6 @@
                     <div class="face front paper">
                         <div class="sec-title">Масштаб катастрофы</div>
                         <div class="img-container">
-                            <!-- ВСТАВЬТЕ КАРТИНКУ 1 -->
                             <img src="images/contamination-zone.jpg" alt="Зона загрязнения">
                             <div class="img-caption">Зона загрязнения</div>
                         </div>
@@ -325,7 +355,6 @@
                     <div class="face front paper">
                         <div class="sec-title">Удар по здоровью</div>
                         <div class="img-container">
-                            <!-- ВСТАВЬТЕ КАРТИНКУ 2 -->
                             <img src="images/medical-consequences.jpg" alt="Медицина">
                             <div class="img-caption">Медицинские последствия</div>
                         </div>
@@ -343,7 +372,6 @@
                     <div class="face front paper">
                         <div class="sec-title">Экологические последствия</div>
                         <div class="img-container">
-                            <!-- ВСТАВЬТЕ КАРТИНКУ 3 -->
                             <img src="images/red-forest.jpg" alt="Рыжий лес">
                             <div class="img-caption">Рыжий лес</div>
                         </div>
@@ -360,7 +388,6 @@
                     <div class="face front paper">
                         <div class="sec-title">Ликвидаторы</div>
                         <div class="img-container">
-                            <!-- ВСТАВЬТЕ КАРТИНКУ 4 -->
                             <img src="images/liquidators.jpg" alt="Ликвидаторы">
                             <div class="img-caption">Ликвидаторы последствий</div>
                         </div>
@@ -375,7 +402,6 @@
                     <div class="face front paper">
                         <div class="sec-title">Память и уроки</div>
                         <div class="img-container">
-                            <!-- ВСТАВЬТЕ КАРТИНКУ 5 -->
                             <img src="images/memory.jpg" alt="Память">
                             <div class="img-caption">День памяти</div>
                         </div>
@@ -403,7 +429,6 @@
         let isOpen = false;
         let isOverlayOpen = false;
 
-        // Данные для оверлея (только лицевая сторона)
         const panelData = {
             scale: `
                 <div class="sec-title">Масштаб катастрофы</div>
