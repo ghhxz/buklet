@@ -127,6 +127,26 @@
         .overlay-content .tl-year { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.9rem; color: #8b0000; margin-bottom: 4px; }
         .overlay-content .tl-desc { font-size: 0.85rem; color: #555; line-height: 1.5; }
 
+        .overlay-content .photo-item {
+            margin: 15px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+            background: #2a1f1a;
+        }
+        .overlay-content .photo-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .overlay-content .photo-caption {
+            background: rgba(0,0,0,0.7);
+            color: rgba(255,255,255,0.8);
+            font-size: 0.7rem;
+            padding: 6px 10px;
+            text-align: center;
+        }
+
         .hint {
             position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%);
             color: rgba(196, 168, 130, 0.4); font-size: 0.7rem; letter-spacing: 2px;
@@ -145,12 +165,13 @@
         .panel.clickable { cursor: pointer; }
         .panel.clickable:hover { box-shadow: 0 5px 35px rgba(139, 0, 0, 0.3); }
 
-        .panel:nth-child(1) { z-index: 6; transform: rotateY(0deg); }
-        .panel:nth-child(2) { z-index: 5; transform: rotateY(0deg); }
-        .panel:nth-child(3) { z-index: 4; transform: rotateY(0deg); }
-        .panel:nth-child(4) { z-index: 3; transform: rotateY(0deg); }
-        .panel:nth-child(5) { z-index: 2; transform: rotateY(0deg); }
-        .panel:nth-child(6) { z-index: 1; transform: rotateY(0deg); }
+        .panel:nth-child(1) { z-index: 7; transform: rotateY(0deg); }
+        .panel:nth-child(2) { z-index: 6; transform: rotateY(0deg); }
+        .panel:nth-child(3) { z-index: 5; transform: rotateY(0deg); }
+        .panel:nth-child(4) { z-index: 4; transform: rotateY(0deg); }
+        .panel:nth-child(5) { z-index: 3; transform: rotateY(0deg); }
+        .panel:nth-child(6) { z-index: 2; transform: rotateY(0deg); }
+        .panel:nth-child(7) { z-index: 1; transform: rotateY(0deg); }
 
         .accordion-booklet.open .panel:nth-child(1) { transform: rotateY(0deg) translateX(0); }
         .accordion-booklet.open .panel:nth-child(2) { transform: rotateY(0deg) translateX(340px); }
@@ -158,6 +179,7 @@
         .accordion-booklet.open .panel:nth-child(4) { transform: rotateY(0deg) translateX(1020px); }
         .accordion-booklet.open .panel:nth-child(5) { transform: rotateY(0deg) translateX(1360px); }
         .accordion-booklet.open .panel:nth-child(6) { transform: rotateY(0deg) translateX(1700px); }
+        .accordion-booklet.open .panel:nth-child(7) { transform: rotateY(0deg) translateX(2040px); }
 
         .face {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -177,7 +199,6 @@
             position: relative;
         }
 
-        /* === ОБНОВЛЁННАЯ ОБЛОЖКА === */
         .cover-top-year {
             position: absolute; top: 35px;
             font-family: 'Montserrat', sans-serif; font-weight: 700;
@@ -195,8 +216,7 @@
             font-family: 'Montserrat', sans-serif; font-weight: 900;
             font-size: 10rem; line-height: 1;
             color: rgba(196, 168, 130, 0.06);
-            z-index: 1;
-            user-select: none;
+            z-index: 1; user-select: none;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
         }
@@ -279,6 +299,7 @@
             .accordion-booklet.open .panel:nth-child(4) { transform: rotateY(0deg) translateX(840px); }
             .accordion-booklet.open .panel:nth-child(5) { transform: rotateY(0deg) translateX(1120px); }
             .accordion-booklet.open .panel:nth-child(6) { transform: rotateY(0deg) translateX(1400px); }
+            .accordion-booklet.open .panel:nth-child(7) { transform: rotateY(0deg) translateX(1680px); }
             .overlay-content { width: 320px; height: 540px; padding: 25px 20px; }
             .cover-big-forty { font-size: 7rem; }
             .cover-top-year, .cover-bottom-year { font-size: 1.4rem; }
@@ -307,14 +328,8 @@
                 <div class="panel" data-cover="true">
                     <div class="face front cover-face">
                         <div class="cover-border"></div>
-
-                        <!-- Год сверху -->
                         <div class="cover-top-year">1986</div>
-
-                        <!-- Большое число 40 на заднем плане -->
                         <div class="cover-big-forty">40</div>
-
-                        <!-- Центральная группа -->
                         <div class="cover-center-group">
                             <svg class="rad-icon" viewBox="0 0 100 100" fill="none">
                                 <circle cx="50" cy="50" r="10" stroke="#c4a882" stroke-width="2" fill="rgba(196,168,130,0.1)"/>
@@ -326,8 +341,6 @@
                             <div class="cover-sub">Последствия для Беларуси</div>
                             <div class="cover-years-dash">—</div>
                         </div>
-
-                        <!-- Год снизу -->
                         <div class="cover-bottom-year">2026</div>
                     </div>
                 </div>
@@ -413,6 +426,22 @@
                     </div>
                 </div>
 
+                <!-- ПАНЕЛЬ 7: КЛАССНЫЙ РУКОВОДИТЕЛЬ -->
+                <div class="panel clickable" data-panel="teacher">
+                    <div class="face front paper">
+                        <div class="sec-title">Наша история</div>
+                        <div class="img-container">
+                            <!-- ФОТО на панели: Светлана Михайловна сегодня -->
+                            <img src="images/teacher-photo.jpg" alt="Партыка Светлана Михайловна">
+                            <div class="img-caption">Партыка Светлана Михайловна</div>
+                        </div>
+                        <p class="text" style="text-align: center; font-style: italic; color: #8b0000; font-size: 0.85rem;">
+                            Учитель русского языка и литературы<br>
+                            Классный руководитель
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -476,6 +505,37 @@
                     <div class="stat-box"><span class="stat-num">$17B+</span><span class="stat-lbl">потрачено на ликвидацию</span></div>
                 </div>
                 <p class="text">Беларусь продолжает работу по реабилитации загрязнённых территорий, мониторингу здоровья населения и сохранению памяти о трагедии.</p>
+            `,
+            teacher: `
+                <div class="sec-title">Партыка Светлана Михайловна</div>
+                
+                <!-- ФОТО 1: ШКОЛА -->
+                <div class="photo-item">
+                    <img src="images/teacher-school.jpg" alt="Школа">
+                    <div class="photo-caption">Школа, из которой эвакуировали детей</div>
+                </div>
+                
+                <p class="text">После аварии на Чернобыльской АЭС в 1986 году, Светлана Михайловна, будучи молодым учителем, <span class="highlight">лично вывозила детей</span> на автобусе из школы, которая находилась в зоне заражения.</p>
+                
+                <p class="text">Она не побоялась остаться в опасной зоне, чтобы убедиться, что каждый ребёнок будет спасён и эвакуирован в безопасное место. Её мужество и самоотверженность спасли десятки детских жизней.</p>
+
+                <!-- ФОТО 2: СВЕТЛАНА МИХАЙЛОВНА НА ОСТАНОВКЕ -->
+                <div class="photo-item">
+                    <img src="images/teacher-busstop.jpg" alt="Светлана Михайловна на остановке">
+                    <div class="photo-caption">Светлана Михайловна</div>
+                </div>
+
+                <p class="text">За свой подвиг Светлана Михайловна была награждена <span class="highlight">медалью участника ликвидации последствий аварии на Чернобыльской АЭС</span>.</p>
+
+                <p class="text">Сегодня она работает учителем русского языка и литературы в нашей школе и является нашим классным руководителем. Мы гордимся, что учимся у человека, который рисковал своей жизнью ради других.</p>
+
+                <div class="quote-box">«Я просто делала то, что должна была делать. Каждый ребёнок — это чья-то жизнь, и я не могла поступить иначе.»</div>
+
+                <!-- ФОТО 3: МЕДАЛЬ -->
+                <div class="photo-item">
+                    <img src="images/teacher-medal.jpg" alt="Медаль участника ликвидации последствий ЧАЭС">
+                    <div class="photo-caption">Медаль участника ликвидации последствий аварии на Чернобыльской АЭС</div>
+                </div>
             `
         };
 
