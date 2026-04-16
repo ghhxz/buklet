@@ -2,162 +2,158 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Чернобыль — Последствия для Беларуси</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Roboto:wght@300;400;500&family=Montserrat:wght@600;700&display=swap');
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            width: 100%; min-height: 100vh;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
 
         body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
             background: #0a0a0a;
             background-image: radial-gradient(ellipse at 50% 50%, rgba(20, 10, 0, 0.9) 0%, #050505 100%);
             font-family: 'Roboto', sans-serif;
-            overflow-x: hidden;
         }
 
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
         .particle {
-            position: absolute; width: 2px; height: 2px;
-            background: rgba(255, 100, 0, 0.3); border-radius: 50%;
+            position: absolute; width: 3px; height: 3px;
+            background: rgba(255, 100, 0, 0.25); border-radius: 50%;
             animation: float 15s linear infinite;
         }
         @keyframes float {
             0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
         }
 
         .wrapper {
             position: relative; z-index: 1;
             display: flex; flex-direction: column; align-items: center;
-            width: 100%;
+            width: 100%; height: 100vh; justify-content: center;
         }
 
         .label {
             color: #c4a882; font-family: 'Playfair Display', serif;
-            font-size: 1.2rem; margin-bottom: 30px;
-            text-transform: uppercase; letter-spacing: 5px;
+            font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+            margin-bottom: clamp(15px, 2.5vh, 30px);
+            text-transform: uppercase; letter-spacing: clamp(3px, 0.8vw, 8px);
             opacity: 0; animation: fadeDown 1s ease 0.5s forwards;
+            white-space: nowrap;
         }
         @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 
         .scene {
             perspective: 2500px;
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
+            display: flex; justify-content: center; align-items: center;
+            padding: 20px;
             overflow: visible;
+            flex: 1;
         }
 
         .accordion-booklet {
             position: relative;
-            width: 340px;
-            height: 600px;
+            width: var(--panel-w, 340px);
+            height: var(--panel-h, 600px);
             transform-style: preserve-3d;
             cursor: pointer;
             transition: transform 1.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            flex-shrink: 0;
         }
 
-        .accordion-booklet.open {
-            transform: translateX(-850px);
-        }
-
+        /* Оверлей */
         .overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.88);
             z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
             transition: opacity 0.4s ease;
-            cursor: pointer;
         }
         .overlay.active { opacity: 1; pointer-events: all; }
         .overlay-content {
-            width: 380px; height: 640px;
+            width: var(--overlay-w, 420px);
+            height: var(--overlay-h, 700px);
             background: linear-gradient(170deg, #f5efe5 0%, #e8ddcf 100%);
-            border-radius: 12px; padding: 35px 30px; position: relative;
+            border-radius: 16px; padding: 40px 35px; position: relative;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            transform: scale(0.8);
+            transform: scale(0.85);
             transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             overflow-y: auto;
         }
         .overlay.active .overlay-content { transform: scale(1); }
         .overlay-close {
-            position: absolute; top: 12px; right: 16px;
-            background: rgba(139, 0, 0, 0.1); border: 1px solid rgba(139, 0, 0, 0.2);
-            color: #8b0000; width: 32px; height: 32px; border-radius: 50%;
+            position: absolute; top: 15px; right: 20px;
+            background: rgba(139, 0, 0, 0.12); border: 2px solid rgba(139, 0, 0, 0.25);
+            color: #8b0000;
+            width: clamp(40px, 5vw, 50px); height: clamp(40px, 5vw, 50px);
+            border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1.1rem; transition: 0.3s; z-index: 10;
+            cursor: pointer; font-size: 1.4rem; transition: 0.3s; z-index: 10;
+            min-width: 44px; min-height: 44px; /* Touch-friendly */
         }
-        .overlay-close:hover { background: rgba(139, 0, 0, 0.2); }
+        .overlay-close:hover { background: rgba(139, 0, 0, 0.25); }
         .overlay-hint {
-            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-            color: rgba(0,0,0,0.25); font-size: 0.65rem; letter-spacing: 1px;
+            position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+            color: rgba(0,0,0,0.25); font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+            letter-spacing: 1px;
         }
 
         .overlay-content .sec-title {
-            font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700;
-            color: #2a1a10; margin-bottom: 20px; padding-bottom: 12px;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.4rem, 2.5vw, 2rem);
+            font-weight: 700; color: #2a1a10;
+            margin-bottom: 20px; padding-bottom: 12px;
             border-bottom: 2px solid rgba(139, 0, 0, 0.2); position: relative;
         }
         .overlay-content .sec-title::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 50px; height: 2px; background: #8b0000; }
-        .overlay-content .text { font-size: 0.95rem; line-height: 1.75; color: #444; text-align: justify; margin-bottom: 15px; }
+        .overlay-content .text {
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+            line-height: 1.75; color: #444; text-align: justify; margin-bottom: 15px;
+        }
         .overlay-content .highlight { color: #8b0000; font-weight: 600; }
-        .overlay-content .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-        .overlay-content .stat-box { background: rgba(139,0,0,0.06); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid rgba(139,0,0,0.1); }
-        .overlay-content .stat-num { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #8b0000; font-size: 1.6rem; display: block; margin-bottom: 4px; }
-        .overlay-content .stat-lbl { font-size: 0.75rem; color: #666; line-height: 1.2; }
-        .overlay-content .img-container { width: 100%; height: 200px; margin: 15px 0; border-radius: 8px; overflow: hidden; position: relative; background: #2a1f1a; box-shadow: 0 3px 15px rgba(0,0,0,0.3); }
+        .overlay-content .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+        .overlay-content .stat-box { background: rgba(139,0,0,0.06); padding: 16px; border-radius: 10px; text-align: center; border: 1px solid rgba(139,0,0,0.1); }
+        .overlay-content .stat-num { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #8b0000; font-size: clamp(1.4rem, 2.5vw, 2rem); display: block; margin-bottom: 4px; }
+        .overlay-content .stat-lbl { font-size: clamp(0.7rem, 1.2vw, 0.9rem); color: #666; line-height: 1.2; }
+        .overlay-content .img-container { width: 100%; height: clamp(180px, 25vh, 240px); margin: 15px 0; border-radius: 10px; overflow: hidden; position: relative; background: #2a1f1a; box-shadow: 0 3px 15px rgba(0,0,0,0.3); }
         .overlay-content .img-container img { width: 100%; height: 100%; object-fit: cover; }
-        .overlay-content .img-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.8); font-size: 0.7rem; padding: 6px 10px; text-align: center; }
-        .overlay-content .quote-box { background: rgba(139,0,0,0.05); border-left: 3px solid #8b0000; padding: 15px 18px; margin: 18px 0; font-style: italic; font-size: 0.9rem; color: #5a4035; }
-        .overlay-content .tl-item { margin-bottom: 15px; border-left: 3px solid #8b0000; padding-left: 15px; }
-        .overlay-content .tl-year { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.9rem; color: #8b0000; margin-bottom: 4px; }
-        .overlay-content .tl-desc { font-size: 0.85rem; color: #555; line-height: 1.5; }
+        .overlay-content .img-caption { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.8); font-size: clamp(0.7rem, 1.2vw, 0.85rem); padding: 8px 12px; text-align: center; }
+        .overlay-content .quote-box { background: rgba(139,0,0,0.05); border-left: 4px solid #8b0000; padding: 16px 20px; margin: 18px 0; font-style: italic; font-size: clamp(0.85rem, 1.4vw, 1.05rem); color: #5a4035; }
+        .overlay-content .tl-item { margin-bottom: 16px; border-left: 3px solid #8b0000; padding-left: 16px; }
+        .overlay-content .tl-year { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: clamp(0.85rem, 1.3vw, 1.05rem); color: #8b0000; margin-bottom: 4px; }
+        .overlay-content .tl-desc { font-size: clamp(0.8rem, 1.3vw, 0.95rem); color: #555; line-height: 1.5; }
 
         .overlay-content .photo-item {
-            margin: 15px 0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.3);
-            background: #2a1f1a;
+            margin: 18px 0; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.3); background: #2a1f1a;
         }
-        .overlay-content .photo-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
+        .overlay-content .photo-item img { width: 100%; height: clamp(180px, 25vh, 240px); object-fit: cover; }
         .overlay-content .photo-caption {
-            background: rgba(0,0,0,0.7);
-            color: rgba(255,255,255,0.8);
-            font-size: 0.7rem;
-            padding: 6px 10px;
-            text-align: center;
+            background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.85);
+            font-size: clamp(0.7rem, 1.2vw, 0.85rem); padding: 8px 12px; text-align: center;
         }
 
         .hint {
-            position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%);
-            color: rgba(196, 168, 130, 0.4); font-size: 0.7rem; letter-spacing: 2px;
-            text-transform: uppercase; white-space: nowrap;
+            position: absolute; bottom: clamp(-55px, -5vh, -45px); left: 50%; transform: translateX(-50%);
+            color: rgba(196, 168, 130, 0.4); font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+            letter-spacing: 2px; text-transform: uppercase; white-space: nowrap;
             animation: pulse 2s infinite; pointer-events: none;
         }
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.7; } }
 
         .panel {
             position: absolute; top: 0; left: 0;
-            width: 340px; height: 100%;
+            width: 100%; height: 100%;
             transform-style: preserve-3d;
             transition: transform 1.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s;
             box-shadow: 0 5px 25px rgba(0,0,0,0.4);
@@ -174,94 +170,101 @@
         .panel:nth-child(7) { z-index: 1; transform: rotateY(0deg); }
 
         .accordion-booklet.open .panel:nth-child(1) { transform: rotateY(0deg) translateX(0); }
-        .accordion-booklet.open .panel:nth-child(2) { transform: rotateY(0deg) translateX(340px); }
-        .accordion-booklet.open .panel:nth-child(3) { transform: rotateY(0deg) translateX(680px); }
-        .accordion-booklet.open .panel:nth-child(4) { transform: rotateY(0deg) translateX(1020px); }
-        .accordion-booklet.open .panel:nth-child(5) { transform: rotateY(0deg) translateX(1360px); }
-        .accordion-booklet.open .panel:nth-child(6) { transform: rotateY(0deg) translateX(1700px); }
-        .accordion-booklet.open .panel:nth-child(7) { transform: rotateY(0deg) translateX(2040px); }
+        .accordion-booklet.open .panel:nth-child(2) { transform: rotateY(0deg) translateX(var(--panel-w, 340px)); }
+        .accordion-booklet.open .panel:nth-child(3) { transform: rotateY(0deg) translateX(calc(var(--panel-w, 340px) * 2)); }
+        .accordion-booklet.open .panel:nth-child(4) { transform: rotateY(0deg) translateX(calc(var(--panel-w, 340px) * 3)); }
+        .accordion-booklet.open .panel:nth-child(5) { transform: rotateY(0deg) translateX(calc(var(--panel-w, 340px) * 4)); }
+        .accordion-booklet.open .panel:nth-child(6) { transform: rotateY(0deg) translateX(calc(var(--panel-w, 340px) * 5)); }
+        .accordion-booklet.open .panel:nth-child(7) { transform: rotateY(0deg) translateX(calc(var(--panel-w, 340px) * 6)); }
 
         .face {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             backface-visibility: hidden; -webkit-backface-visibility: hidden;
-            overflow: hidden;
+            overflow: hidden; border-radius: 4px;
         }
 
         .paper {
             background: linear-gradient(170deg, #f5efe5 0%, #e8ddcf 100%);
-            padding: 25px; height: 100%; position: relative;
+            padding: clamp(20px, 2.5vw, 30px);
+            height: 100%; position: relative;
         }
         .cover-face {
             background: linear-gradient(160deg, #1a1a1a 0%, #0f0b08 100%);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 30px; height: 100%;
+            padding: clamp(25px, 3vw, 35px);
+            height: 100%;
             border: 1px solid rgba(196, 168, 130, 0.15);
             position: relative;
         }
 
         .cover-top-year {
-            position: absolute; top: 35px;
+            position: absolute; top: clamp(25px, 4vh, 40px);
             font-family: 'Montserrat', sans-serif; font-weight: 700;
-            font-size: 1.8rem; color: rgba(196, 168, 130, 0.35);
-            letter-spacing: 8px;
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            color: rgba(196, 168, 130, 0.35); letter-spacing: clamp(4px, 1vw, 10px);
         }
         .cover-bottom-year {
-            position: absolute; bottom: 35px;
+            position: absolute; bottom: clamp(25px, 4vh, 40px);
             font-family: 'Montserrat', sans-serif; font-weight: 700;
-            font-size: 1.8rem; color: rgba(196, 168, 130, 0.35);
-            letter-spacing: 8px;
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            color: rgba(196, 168, 130, 0.35); letter-spacing: clamp(4px, 1vw, 10px);
         }
         .cover-big-forty {
             position: absolute;
             font-family: 'Montserrat', sans-serif; font-weight: 900;
-            font-size: 10rem; line-height: 1;
-            color: rgba(196, 168, 130, 0.06);
+            font-size: clamp(8rem, 18vw, 16rem);
+            line-height: 1; color: rgba(196, 168, 130, 0.06);
             z-index: 1; user-select: none;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
         }
-        .cover-center-group {
-            position: relative; z-index: 2;
-            display: flex; flex-direction: column; align-items: center;
-        }
-        .cover-border { position: absolute; top: 15px; left: 15px; right: 15px; bottom: 15px; border: 1px solid rgba(196, 168, 130, 0.15); pointer-events: none; }
+        .cover-center-group { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+        .cover-border { position: absolute; top: clamp(12px, 1.5vw, 18px); left: clamp(12px, 1.5vw, 18px); right: clamp(12px, 1.5vw, 18px); bottom: clamp(12px, 1.5vw, 18px); border: 1px solid rgba(196, 168, 130, 0.15); pointer-events: none; border-radius: 2px; }
         .cover-title {
-            font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900;
-            color: #c4a882; text-align: center; text-transform: uppercase;
-            letter-spacing: 2px; margin-bottom: 8px; line-height: 1.1;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 900; color: #c4a882; text-align: center;
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-bottom: 8px; line-height: 1.1;
         }
         .cover-sub {
             color: rgba(196, 168, 130, 0.5); font-style: italic;
-            font-size: 0.95rem; margin-bottom: 10px;
+            font-size: clamp(0.85rem, 1.8vw, 1.2rem);
+            margin-bottom: 10px;
         }
-        .cover-years-dash {
-            color: rgba(196, 168, 130, 0.3); font-size: 0.8rem;
-            letter-spacing: 4px;
+        .cover-years-dash { color: rgba(196, 168, 130, 0.3); font-size: clamp(0.7rem, 1.5vw, 1rem); letter-spacing: 4px; }
+        .rad-icon {
+            width: clamp(60px, 8vw, 90px); height: clamp(60px, 8vw, 90px);
+            margin-bottom: 15px; animation: glow 3s infinite;
         }
-        .rad-icon { width: 70px; height: 70px; margin-bottom: 15px; animation: glow 3s infinite; }
         @keyframes glow { 0%,100%{opacity:0.6; filter:drop-shadow(0 0 8px rgba(255,100,0,0.3));} 50%{opacity:0.95; filter:drop-shadow(0 0 20px rgba(255,100,0,0.5));} }
 
         .sec-title {
-            font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700;
-            color: #2a1a10; margin-bottom: 15px; padding-bottom: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.1rem, 2vw, 1.6rem);
+            font-weight: 700; color: #2a1a10;
+            margin-bottom: 15px; padding-bottom: 10px;
             border-bottom: 2px solid rgba(139, 0, 0, 0.2); position: relative;
         }
-        .sec-title::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 40px; height: 2px; background: #8b0000; }
+        .sec-title::after { content: ''; position: absolute; bottom: -2px; left: 0; width: clamp(30px, 5vw, 50px); height: 2px; background: #8b0000; }
 
-        .text { font-size: 0.8rem; line-height: 1.65; color: #444; text-align: justify; margin-bottom: 12px; }
+        .text {
+            font-size: clamp(0.72rem, 1.3vw, 0.95rem);
+            line-height: 1.65; color: #444; text-align: justify; margin-bottom: 12px;
+        }
         .highlight { color: #8b0000; font-weight: 600; }
 
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .stat-box { background: rgba(139,0,0,0.06); padding: 12px; border-radius: 6px; text-align: center; border: 1px solid rgba(139,0,0,0.1); }
-        .stat-num { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #8b0000; font-size: 1.3rem; display: block; margin-bottom: 3px; }
-        .stat-lbl { font-size: 0.65rem; color: #666; line-height: 1.2; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(6px, 1vw, 12px); margin: 15px 0; }
+        .stat-box { background: rgba(139,0,0,0.06); padding: clamp(8px, 1.2vw, 14px); border-radius: clamp(4px, 0.5vw, 8px); text-align: center; border: 1px solid rgba(139,0,0,0.1); }
+        .stat-num { font-family: 'Montserrat', sans-serif; font-weight: 700; color: #8b0000; font-size: clamp(1.1rem, 2vw, 1.6rem); display: block; margin-bottom: 3px; }
+        .stat-lbl { font-size: clamp(0.55rem, 1vw, 0.75rem); color: #666; line-height: 1.2; }
 
         .tl-item { margin-bottom: 12px; border-left: 3px solid #8b0000; padding-left: 12px; }
-        .tl-year { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 0.8rem; color: #8b0000; margin-bottom: 3px; }
-        .tl-desc { font-size: 0.75rem; color: #555; line-height: 1.4; }
+        .tl-year { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: clamp(0.7rem, 1.2vw, 0.95rem); color: #8b0000; margin-bottom: 3px; }
+        .tl-desc { font-size: clamp(0.65rem, 1.1vw, 0.85rem); color: #555; line-height: 1.4; }
 
         .img-container {
-            width: 100%; height: 140px; margin: 12px 0; border-radius: 6px;
+            width: 100%; height: clamp(100px, 18vh, 160px);
+            margin: 12px 0; border-radius: clamp(4px, 0.5vw, 8px);
             overflow: hidden; position: relative; background: #2a1f1a;
             box-shadow: 0 3px 10px rgba(0,0,0,0.3);
         }
@@ -269,40 +272,93 @@
         .img-container:hover img { transform: scale(1.05); }
         .img-caption {
             position: absolute; bottom: 0; left: 0; right: 0;
-            background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.8);
-            font-size: 0.65rem; padding: 5px 8px; text-align: center;
+            background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.85);
+            font-size: clamp(0.6rem, 1vw, 0.75rem); padding: 5px 8px; text-align: center;
         }
 
         .quote-box {
             background: rgba(139,0,0,0.05); border-left: 3px solid #8b0000;
-            padding: 12px 15px; margin: 15px 0; font-style: italic;
-            font-size: 0.8rem; color: #5a4035;
+            padding: clamp(10px, 1.5vw, 15px); margin: 15px 0;
+            font-style: italic; font-size: clamp(0.72rem, 1.2vw, 0.9rem); color: #5a4035;
+            border-radius: 0 clamp(4px, 0.5vw, 6px) clamp(4px, 0.5vw, 6px) 0;
         }
 
-        .controls { margin-top: 40px; opacity: 0; transition: opacity 0.5s; pointer-events: none; height: 30px; }
+        .controls {
+            margin-top: clamp(20px, 3vh, 40px);
+            opacity: 0; transition: opacity 0.5s; pointer-events: none;
+        }
         .controls.visible { opacity: 1; pointer-events: all; }
         .btn-reload {
-            background: rgba(196, 168, 130, 0.1); border: 1px solid rgba(196, 168, 130, 0.3);
-            color: #c4a882; padding: 10px 28px; border-radius: 25px; cursor: pointer;
-            font-size: 0.75rem; letter-spacing: 1px; transition: 0.3s; text-transform: uppercase;
+            background: rgba(196, 168, 130, 0.1);
+            border: 2px solid rgba(196, 168, 130, 0.3);
+            color: #c4a882;
+            padding: clamp(10px, 1.5vw, 16px) clamp(24px, 3vw, 40px);
+            border-radius: 30px; cursor: pointer;
+            font-size: clamp(0.75rem, 1.3vw, 1rem);
+            letter-spacing: 1px; transition: 0.3s; text-transform: uppercase;
+            min-height: 44px; min-width: 120px;
+            touch-action: manipulation;
         }
         .btn-reload:hover { background: rgba(196, 168, 130, 0.25); }
+        .btn-reload:active { transform: scale(0.96); }
 
-        @media (max-width: 1200px) { .accordion-booklet.open { transform: translateX(-600px); } }
-        @media (max-width: 900px) { .accordion-booklet.open { transform: translateX(-400px); } }
+        /* === МУЛЬТИБОРД (большие сенсорные экраны) === */
+        @media (min-width: 1920px) and (min-height: 1080px) {
+            :root {
+                --panel-w: 420px;
+                --panel-h: 700px;
+                --overlay-w: 520px;
+                --overlay-h: 820px;
+            }
+            .overlay-content { border-radius: 20px; padding: 45px 40px; }
+            .panel { box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+        }
+
+        /* Мультиборд 4K */
+        @media (min-width: 2560px) and (min-height: 1440px) {
+            :root {
+                --panel-w: 520px;
+                --panel-h: 820px;
+                --overlay-w: 620px;
+                --overlay-h: 920px;
+            }
+        }
+
+        /* Мультиборд вертикальная ориентация (портрет) */
+        @media (orientation: portrait) and (min-height: 1280px) {
+            :root {
+                --panel-w: min(70vw, 450px);
+                --panel-h: min(75vh, 650px);
+                --overlay-w: min(85vw, 500px);
+                --overlay-h: min(80vh, 700px);
+            }
+        }
+
+        /* Планшеты */
+        @media (max-width: 1024px) and (min-width: 601px) {
+            :root {
+                --panel-w: 300px;
+                --panel-h: 520px;
+                --overlay-w: 360px;
+                --overlay-h: 620px;
+            }
+        }
+
+        /* Мобильные */
         @media (max-width: 600px) {
-            .accordion-booklet { width: 280px; height: 500px; }
-            .panel { width: 280px; }
-            .accordion-booklet.open { transform: translateX(-700px); }
-            .accordion-booklet.open .panel:nth-child(2) { transform: rotateY(0deg) translateX(280px); }
-            .accordion-booklet.open .panel:nth-child(3) { transform: rotateY(0deg) translateX(560px); }
-            .accordion-booklet.open .panel:nth-child(4) { transform: rotateY(0deg) translateX(840px); }
-            .accordion-booklet.open .panel:nth-child(5) { transform: rotateY(0deg) translateX(1120px); }
-            .accordion-booklet.open .panel:nth-child(6) { transform: rotateY(0deg) translateX(1400px); }
-            .accordion-booklet.open .panel:nth-child(7) { transform: rotateY(0deg) translateX(1680px); }
-            .overlay-content { width: 320px; height: 540px; padding: 25px 20px; }
+            :root {
+                --panel-w: 260px;
+                --panel-h: 460px;
+                --overlay-w: 90vw;
+                --overlay-h: 80vh;
+            }
+            .accordion-booklet.open .panel:nth-child(2) { transform: rotateY(0deg) translateX(260px); }
+            .accordion-booklet.open .panel:nth-child(3) { transform: rotateY(0deg) translateX(520px); }
+            .accordion-booklet.open .panel:nth-child(4) { transform: rotateY(0deg) translateX(780px); }
+            .accordion-booklet.open .panel:nth-child(5) { transform: rotateY(0deg) translateX(1040px); }
+            .accordion-booklet.open .panel:nth-child(6) { transform: rotateY(0deg) translateX(1300px); }
+            .accordion-booklet.open .panel:nth-child(7) { transform: rotateY(0deg) translateX(1560px); }
             .cover-big-forty { font-size: 7rem; }
-            .cover-top-year, .cover-bottom-year { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -324,7 +380,6 @@
         <div class="scene">
             <div class="accordion-booklet" id="booklet" onclick="handleBookletClick(event)">
 
-                <!-- ПАНЕЛЬ 1: ОБЛОЖКА -->
                 <div class="panel" data-cover="true">
                     <div class="face front cover-face">
                         <div class="cover-border"></div>
@@ -345,7 +400,6 @@
                     </div>
                 </div>
 
-                <!-- ПАНЕЛЬ 2: МАСШТАБ -->
                 <div class="panel clickable" data-panel="scale">
                     <div class="face front paper">
                         <div class="sec-title">Масштаб катастрофы</div>
@@ -363,7 +417,6 @@
                     </div>
                 </div>
 
-                <!-- ПАНЕЛЬ 3: ЗДОРОВЬЕ -->
                 <div class="panel clickable" data-panel="health">
                     <div class="face front paper">
                         <div class="sec-title">Удар по здоровью</div>
@@ -380,7 +433,6 @@
                     </div>
                 </div>
 
-                <!-- ПАНЕЛЬ 4: ЭКОЛОГИЯ -->
                 <div class="panel clickable" data-panel="ecology">
                     <div class="face front paper">
                         <div class="sec-title">Экологические последствия</div>
@@ -396,7 +448,6 @@
                     </div>
                 </div>
 
-                <!-- ПАНЕЛЬ 5: ЛИКВИДАЦИЯ -->
                 <div class="panel clickable" data-panel="liquidation">
                     <div class="face front paper">
                         <div class="sec-title">Ликвидаторы</div>
@@ -410,7 +461,6 @@
                     </div>
                 </div>
 
-                <!-- ПАНЕЛЬ 6: ПАМЯТЬ -->
                 <div class="panel clickable" data-panel="memory">
                     <div class="face front paper">
                         <div class="sec-title">Память и уроки</div>
@@ -426,16 +476,14 @@
                     </div>
                 </div>
 
-                <!-- ПАНЕЛЬ 7: КЛАССНЫЙ РУКОВОДИТЕЛЬ -->
                 <div class="panel clickable" data-panel="teacher">
                     <div class="face front paper">
                         <div class="sec-title">Наша история</div>
                         <div class="img-container">
-                            <!-- ФОТО на панели: Светлана Михайловна сегодня -->
                             <img src="images/teacher-photo.jpg" alt="Партыка Светлана Михайловна">
                             <div class="img-caption">Партыка Светлана Михайловна</div>
                         </div>
-                        <p class="text" style="text-align: center; font-style: italic; color: #8b0000; font-size: 0.85rem;">
+                        <p class="text" style="text-align: center; font-style: italic; color: #8b0000; font-size: clamp(0.75rem, 1.3vw, 0.95rem);">
                             Учитель русского языка и литературы<br>
                             Классный руководитель
                         </p>
@@ -457,6 +505,76 @@
         const overlayBody = document.getElementById('overlayBody');
         let isOpen = false;
         let isOverlayOpen = false;
+
+        // Динамическое центрирование — адаптируется под любой размер
+        function centerBooklet() {
+            const panelWidth = booklet.offsetWidth;
+            const panelCount = document.querySelectorAll('.panel').length;
+            const totalWidth = panelWidth * panelCount;
+            const shift = -(totalWidth - panelWidth) / 2;
+            booklet.style.transform = `translateX(${shift}px)`;
+        }
+
+        function openBooklet() {
+            isOpen = true;
+            booklet.classList.add('open');
+            controls.classList.add('visible');
+            requestAnimationFrame(() => requestAnimationFrame(centerBooklet));
+        }
+
+        function closeBooklet() {
+            if (isOverlayOpen) closeOverlay();
+            isOpen = false;
+            booklet.classList.remove('open');
+            controls.classList.remove('visible');
+            booklet.style.transform = '';
+        }
+
+        function handleBookletClick(event) {
+            const panel = event.target.closest('.panel');
+            if (!panel) return;
+
+            if (panel.dataset.cover === 'true') {
+                if (isOpen) closeBooklet();
+                else openBooklet();
+                return;
+            }
+
+            if (!isOpen) {
+                openBooklet();
+            } else if (panel.classList.contains('clickable')) {
+                showOverlay(panel.dataset.panel);
+            }
+        }
+
+        // Touch-поддержка для мультибордов
+        let touchStartX = 0;
+        booklet.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        booklet.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            // Свайп влево = открыть, свайп вправо = закрыть
+            if (Math.abs(diff) > 50) {
+                if (diff > 0 && !isOpen) openBooklet();
+                else if (diff < 0 && isOpen) closeBooklet();
+            }
+        }, { passive: true });
+
+        function showOverlay(panelType) {
+            const content = panelData[panelType];
+            if (!content) return;
+            overlayBody.innerHTML = content;
+            overlay.classList.add('active');
+            isOverlayOpen = true;
+        }
+
+        function closeOverlay() {
+            overlay.classList.remove('active');
+            isOverlayOpen = false;
+        }
 
         const panelData = {
             scale: `
@@ -508,30 +626,19 @@
             `,
             teacher: `
                 <div class="sec-title">Партыка Светлана Михайловна</div>
-                
-                <!-- ФОТО 1: ШКОЛА -->
                 <div class="photo-item">
                     <img src="images/teacher-school.jpg" alt="Школа">
                     <div class="photo-caption">Школа, из которой эвакуировали детей</div>
                 </div>
-                
                 <p class="text">После аварии на Чернобыльской АЭС в 1986 году, Светлана Михайловна, будучи молодым учителем, <span class="highlight">лично вывозила детей</span> на автобусе из школы, которая находилась в зоне заражения.</p>
-                
                 <p class="text">Она не побоялась остаться в опасной зоне, чтобы убедиться, что каждый ребёнок будет спасён и эвакуирован в безопасное место. Её мужество и самоотверженность спасли десятки детских жизней.</p>
-
-                <!-- ФОТО 2: СВЕТЛАНА МИХАЙЛОВНА НА ОСТАНОВКЕ -->
                 <div class="photo-item">
                     <img src="images/teacher-busstop.jpg" alt="Светлана Михайловна на остановке">
                     <div class="photo-caption">Светлана Михайловна</div>
                 </div>
-
                 <p class="text">За свой подвиг Светлана Михайловна была награждена <span class="highlight">медалью участника ликвидации последствий аварии на Чернобыльской АЭС</span>.</p>
-
                 <p class="text">Сегодня она работает учителем русского языка и литературы в нашей школе и является нашим классным руководителем. Мы гордимся, что учимся у человека, который рисковал своей жизнью ради других.</p>
-
                 <div class="quote-box">«Я просто делала то, что должна была делать. Каждый ребёнок — это чья-то жизнь, и я не могла поступить иначе.»</div>
-
-                <!-- ФОТО 3: МЕДАЛЬ -->
                 <div class="photo-item">
                     <img src="images/teacher-medal.jpg" alt="Медаль участника ликвидации последствий ЧАЭС">
                     <div class="photo-caption">Медаль участника ликвидации последствий аварии на Чернобыльской АЭС</div>
@@ -539,51 +646,10 @@
             `
         };
 
-        function handleBookletClick(event) {
-            const panel = event.target.closest('.panel');
-            if (!panel) return;
+        // Пересчёт при ресайзе
+        window.addEventListener('resize', () => { if (isOpen) centerBooklet(); });
 
-            if (panel.dataset.cover === 'true') {
-                if (isOpen) closeBooklet();
-                else openBooklet();
-                return;
-            }
-
-            if (!isOpen) {
-                openBooklet();
-            } else if (panel.classList.contains('clickable')) {
-                showOverlay(panel.dataset.panel);
-            }
-        }
-
-        function openBooklet() {
-            isOpen = true;
-            booklet.classList.add('open');
-            controls.classList.add('visible');
-        }
-
-        function closeBooklet() {
-            if (isOverlayOpen) closeOverlay();
-            setTimeout(() => {
-                isOpen = false;
-                booklet.classList.remove('open');
-                controls.classList.remove('visible');
-            }, 50);
-        }
-
-        function showOverlay(panelType) {
-            const content = panelData[panelType];
-            if (!content) return;
-            overlayBody.innerHTML = content;
-            overlay.classList.add('active');
-            isOverlayOpen = true;
-        }
-
-        function closeOverlay() {
-            overlay.classList.remove('active');
-            isOverlayOpen = false;
-        }
-
+        // Частицы
         (function(){
             const c = document.getElementById('particles');
             for(let i=0; i<40; i++){
