@@ -99,7 +99,7 @@
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; font-size: 1.4rem; transition: 0.3s; z-index: 10;
-            min-width: 44px; min-height: 44px; /* Touch-friendly */
+            min-width: 44px; min-height: 44px;
         }
         .overlay-close:hover { background: rgba(139, 0, 0, 0.25); }
         .overlay-hint {
@@ -161,6 +161,7 @@
         .panel.clickable { cursor: pointer; }
         .panel.clickable:hover { box-shadow: 0 5px 35px rgba(139, 0, 0, 0.3); }
 
+        /* НОВЫЙ ПОРЯДОК ПАНЕЛЕЙ */
         .panel:nth-child(1) { z-index: 7; transform: rotateY(0deg); }
         .panel:nth-child(2) { z-index: 6; transform: rotateY(0deg); }
         .panel:nth-child(3) { z-index: 5; transform: rotateY(0deg); }
@@ -302,7 +303,7 @@
         .btn-reload:hover { background: rgba(196, 168, 130, 0.25); }
         .btn-reload:active { transform: scale(0.96); }
 
-        /* === МУЛЬТИБОРД (большие сенсорные экраны) === */
+        /* === МУЛЬТИБОРД === */
         @media (min-width: 1920px) and (min-height: 1080px) {
             :root {
                 --panel-w: 420px;
@@ -314,7 +315,6 @@
             .panel { box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
         }
 
-        /* Мультиборд 4K */
         @media (min-width: 2560px) and (min-height: 1440px) {
             :root {
                 --panel-w: 520px;
@@ -324,7 +324,6 @@
             }
         }
 
-        /* Мультиборд вертикальная ориентация (портрет) */
         @media (orientation: portrait) and (min-height: 1280px) {
             :root {
                 --panel-w: min(70vw, 450px);
@@ -334,7 +333,6 @@
             }
         }
 
-        /* Планшеты */
         @media (max-width: 1024px) and (min-width: 601px) {
             :root {
                 --panel-w: 300px;
@@ -344,7 +342,6 @@
             }
         }
 
-        /* Мобильные */
         @media (max-width: 600px) {
             :root {
                 --panel-w: 260px;
@@ -380,6 +377,7 @@
         <div class="scene">
             <div class="accordion-booklet" id="booklet" onclick="handleBookletClick(event)">
 
+                <!-- 1. ОБЛОЖКА -->
                 <div class="panel" data-cover="true">
                     <div class="face front cover-face">
                         <div class="cover-border"></div>
@@ -400,6 +398,21 @@
                     </div>
                 </div>
 
+                <!-- 2. ЛИКВИДАТОРЫ (вторая панель) -->
+                <div class="panel clickable" data-panel="liquidation">
+                    <div class="face front paper">
+                        <div class="sec-title">Ликвидаторы</div>
+                        <div class="img-container">
+                            <img src="images/liquidators.jpg" alt="Ликвидаторы">
+                            <div class="img-caption">Ликвидаторы последствий</div>
+                        </div>
+                        <p class="text">Более <span class="highlight">500 000 человек</span> участвовали в ликвидации последствий катастрофы.</p>
+                        <p class="text">Военные, шахтёры, пожарные, учёные, врачи — все они рисковали жизнью, чтобы остановить распространение радиации.</p>
+                        <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов.»</div>
+                    </div>
+                </div>
+
+                <!-- 3. МАСШТАБ КАТАСТРОФЫ (третья панель) -->
                 <div class="panel clickable" data-panel="scale">
                     <div class="face front paper">
                         <div class="sec-title">Масштаб катастрофы</div>
@@ -417,9 +430,10 @@
                     </div>
                 </div>
 
+                <!-- 4. ВЛИЯНИЕ НА ЗДОРОВЬЕ (четвёртая панель, изменено название) -->
                 <div class="panel clickable" data-panel="health">
                     <div class="face front paper">
-                        <div class="sec-title">Удар по здоровью</div>
+                        <div class="sec-title">Влияние на здоровье</div>
                         <div class="img-container">
                             <img src="images/medical-consequences.jpg" alt="Медицина">
                             <div class="img-caption">Медицинские последствия</div>
@@ -433,6 +447,7 @@
                     </div>
                 </div>
 
+                <!-- 5. ЭКОЛОГИЧЕСКИЕ ПОСЛЕДСТВИЯ (пятая панель) -->
                 <div class="panel clickable" data-panel="ecology">
                     <div class="face front paper">
                         <div class="sec-title">Экологические последствия</div>
@@ -448,19 +463,7 @@
                     </div>
                 </div>
 
-                <div class="panel clickable" data-panel="liquidation">
-                    <div class="face front paper">
-                        <div class="sec-title">Ликвидаторы</div>
-                        <div class="img-container">
-                            <img src="images/liquidators.jpg" alt="Ликвидаторы">
-                            <div class="img-caption">Ликвидаторы последствий</div>
-                        </div>
-                        <p class="text">Более <span class="highlight">500 000 человек</span> участвовали в ликвидации последствий катастрофы.</p>
-                        <p class="text">Военные, шахтёры, пожарные, учёные, врачи — все они рисковали жизнью, чтобы остановить распространение радиации.</p>
-                        <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов.»</div>
-                    </div>
-                </div>
-
+                <!-- 6. ПАМЯТЬ И УРОКИ (шестая панель) -->
                 <div class="panel clickable" data-panel="memory">
                     <div class="face front paper">
                         <div class="sec-title">Память и уроки</div>
@@ -476,6 +479,7 @@
                     </div>
                 </div>
 
+                <!-- 7. НАША ИСТОРИЯ (седьмая панель) -->
                 <div class="panel clickable" data-panel="teacher">
                     <div class="face front paper">
                         <div class="sec-title">Наша история</div>
@@ -506,7 +510,6 @@
         let isOpen = false;
         let isOverlayOpen = false;
 
-        // Динамическое центрирование — адаптируется под любой размер
         function centerBooklet() {
             const panelWidth = booklet.offsetWidth;
             const panelCount = document.querySelectorAll('.panel').length;
@@ -547,7 +550,6 @@
             }
         }
 
-        // Touch-поддержка для мультибордов
         let touchStartX = 0;
         booklet.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
@@ -556,7 +558,6 @@
         booklet.addEventListener('touchend', (e) => {
             const touchEndX = e.changedTouches[0].clientX;
             const diff = touchStartX - touchEndX;
-            // Свайп влево = открыть, свайп вправо = закрыть
             if (Math.abs(diff) > 50) {
                 if (diff > 0 && !isOpen) openBooklet();
                 else if (diff < 0 && isOpen) closeBooklet();
@@ -577,6 +578,13 @@
         }
 
         const panelData = {
+            liquidation: `
+                <div class="sec-title">Ликвидаторы</div>
+                <div class="img-container"><img src="images/liquidators.jpg" alt="Ликвидаторы"><div class="img-caption">Ликвидаторы последствий</div></div>
+                <p class="text">Более <span class="highlight">500 000 человек</span> из всех республик СССР участвовали в ликвидации последствий катастрофы.</p>
+                <p class="text">Военные, шахтёры, пожарные, учёные, врачи, строители — все они рисковали жизнью и здоровьем, чтобы остановить распространение радиации.</p>
+                <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов. Их жертва спасла миллионы жизней.»</div>
+            `,
             scale: `
                 <div class="sec-title">Масштаб катастрофы</div>
                 <div class="img-container"><img src="images/contamination-zone.jpg" alt="Загрязнение"><div class="img-caption">Зона загрязнения</div></div>
@@ -589,7 +597,7 @@
                 </div>
             `,
             health: `
-                <div class="sec-title">Удар по здоровью</div>
+                <div class="sec-title">Влияние на здоровье</div>
                 <div class="img-container"><img src="images/medical-consequences.jpg" alt="Медицина"><div class="img-caption">Медицинские последствия</div></div>
                 <p class="text">Катастрофа нанесла колоссальный удар по здоровью населения Беларуси. Особенно пострадали дети, которые были наиболее уязвимы к воздействию радиации.</p>
                 <div class="stat-grid">
@@ -607,13 +615,6 @@
                     <div class="stat-box"><span class="stat-num">30 лет</span><span class="stat-lbl">период полураспада Cs-137</span></div>
                 </div>
                 <p class="text">Грибы и ягоды до сих пор могут содержать опасные уровни радионуклидов. Запрещён сбор грибов и ягод в загрязнённых зонах.</p>
-            `,
-            liquidation: `
-                <div class="sec-title">Ликвидаторы</div>
-                <div class="img-container"><img src="images/liquidators.jpg" alt="Ликвидаторы"><div class="img-caption">Ликвидаторы последствий</div></div>
-                <p class="text">Более <span class="highlight">500 000 человек</span> из всех республик СССР участвовали в ликвидации последствий катастрофы.</p>
-                <p class="text">Военные, шахтёры, пожарные, учёные, врачи, строители — все они рисковали жизнью и здоровьем, чтобы остановить распространение радиации.</p>
-                <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов. Их жертва спасла миллионы жизней.»</div>
             `,
             memory: `
                 <div class="sec-title">Память и уроки</div>
@@ -646,10 +647,8 @@
             `
         };
 
-        // Пересчёт при ресайзе
         window.addEventListener('resize', () => { if (isOpen) centerBooklet(); });
 
-        // Частицы
         (function(){
             const c = document.getElementById('particles');
             for(let i=0; i<40; i++){
