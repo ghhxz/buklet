@@ -161,7 +161,7 @@
         .panel.clickable { cursor: pointer; }
         .panel.clickable:hover { box-shadow: 0 5px 35px rgba(139, 0, 0, 0.3); }
 
-        /* НОВЫЙ ПОРЯДОК ПАНЕЛЕЙ */
+        /* ПРАВИЛЬНЫЙ ПОРЯДОК ПАНЕЛЕЙ */
         .panel:nth-child(1) { z-index: 7; transform: rotateY(0deg); }
         .panel:nth-child(2) { z-index: 6; transform: rotateY(0deg); }
         .panel:nth-child(3) { z-index: 5; transform: rotateY(0deg); }
@@ -398,21 +398,7 @@
                     </div>
                 </div>
 
-                <!-- 2. ЛИКВИДАТОРЫ (вторая панель) -->
-                <div class="panel clickable" data-panel="liquidation">
-                    <div class="face front paper">
-                        <div class="sec-title">Ликвидаторы</div>
-                        <div class="img-container">
-                            <img src="images/liquidators.jpg" alt="Ликвидаторы">
-                            <div class="img-caption">Ликвидаторы последствий</div>
-                        </div>
-                        <p class="text">Более <span class="highlight">500 000 человек</span> участвовали в ликвидации последствий катастрофы.</p>
-                        <p class="text">Военные, шахтёры, пожарные, учёные, врачи — все они рисковали жизнью, чтобы остановить распространение радиации.</p>
-                        <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов.»</div>
-                    </div>
-                </div>
-
-                <!-- 3. МАСШТАБ КАТАСТРОФЫ (третья панель) -->
+                <!-- 2. МАСШТАБ КАТАСТРОФЫ (вторая панель) -->
                 <div class="panel clickable" data-panel="scale">
                     <div class="face front paper">
                         <div class="sec-title">Масштаб катастрофы</div>
@@ -430,7 +416,21 @@
                     </div>
                 </div>
 
-                <!-- 4. ВЛИЯНИЕ НА ЗДОРОВЬЕ (четвёртая панель, изменено название) -->
+                <!-- 3. ЛИКВИДАТОРЫ (третья панель) -->
+                <div class="panel clickable" data-panel="liquidation">
+                    <div class="face front paper">
+                        <div class="sec-title">Ликвидаторы</div>
+                        <div class="img-container">
+                            <img src="images/liquidators.jpg" alt="Ликвидаторы">
+                            <div class="img-caption">Ликвидаторы последствий</div>
+                        </div>
+                        <p class="text">Более <span class="highlight">500 000 человек</span> участвовали в ликвидации последствий катастрофы.</p>
+                        <p class="text">Военные, шахтёры, пожарные, учёные, врачи — все они рисковали жизнью, чтобы остановить распространение радиации.</p>
+                        <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов.»</div>
+                    </div>
+                </div>
+
+                <!-- 4. ВЛИЯНИЕ НА ЗДОРОВЬЕ (четвёртая панель) -->
                 <div class="panel clickable" data-panel="health">
                     <div class="face front paper">
                         <div class="sec-title">Влияние на здоровье</div>
@@ -578,13 +578,6 @@
         }
 
         const panelData = {
-            liquidation: `
-                <div class="sec-title">Ликвидаторы</div>
-                <div class="img-container"><img src="images/liquidators.jpg" alt="Ликвидаторы"><div class="img-caption">Ликвидаторы последствий</div></div>
-                <p class="text">Более <span class="highlight">500 000 человек</span> из всех республик СССР участвовали в ликвидации последствий катастрофы.</p>
-                <p class="text">Военные, шахтёры, пожарные, учёные, врачи, строители — все они рисковали жизнью и здоровьем, чтобы остановить распространение радиации.</p>
-                <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов. Их жертва спасла миллионы жизней.»</div>
-            `,
             scale: `
                 <div class="sec-title">Масштаб катастрофы</div>
                 <div class="img-container"><img src="images/contamination-zone.jpg" alt="Загрязнение"><div class="img-caption">Зона загрязнения</div></div>
@@ -595,6 +588,13 @@
                     <div class="stat-box"><span class="stat-num">3 700+</span><span class="stat-lbl">населённых пунктов</span></div>
                     <div class="stat-box"><span class="stat-num">2M+</span><span class="stat-lbl">пострадавших</span></div>
                 </div>
+            `,
+            liquidation: `
+                <div class="sec-title">Ликвидаторы</div>
+                <div class="img-container"><img src="images/liquidators.jpg" alt="Ликвидаторы"><div class="img-caption">Ликвидаторы последствий</div></div>
+                <p class="text">Более <span class="highlight">500 000 человек</span> из всех республик СССР участвовали в ликвидации последствий катастрофы.</p>
+                <p class="text">Военные, шахтёры, пожарные, учёные, врачи, строители — все они рисковали жизнью и здоровьем, чтобы остановить распространение радиации.</p>
+                <div class="quote-box">«Мы не можем изменить прошлое, но обязаны сохранить память о подвиге ликвидаторов. Их жертва спасла миллионы жизней.»</div>
             `,
             health: `
                 <div class="sec-title">Влияние на здоровье</div>
