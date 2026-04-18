@@ -138,6 +138,7 @@
             box-shadow: 0 4px 18px rgba(0,0,0,0.3); background: #2a1f1a;
         }
         .overlay-content .photo-item img { width: 100%; height: clamp(180px, 25vh, 240px); object-fit: cover; }
+        .overlay-content .photo-item.portrait img { height: clamp(280px, 35vh, 380px); }
         .overlay-content .photo-caption {
             background: rgba(0,0,0,0.7); color: rgba(255,255,255,0.85);
             font-size: clamp(0.7rem, 1.2vw, 0.85rem); padding: 8px 12px; text-align: center;
@@ -398,7 +399,7 @@
                     </div>
                 </div>
 
-                <!-- 2. МАСШТАБ КАТАСТРОФЫ (вторая панель) -->
+                <!-- 2. МАСШТАБ КАТАСТРОФЫ -->
                 <div class="panel clickable" data-panel="scale">
                     <div class="face front paper">
                         <div class="sec-title">Масштаб катастрофы</div>
@@ -416,7 +417,7 @@
                     </div>
                 </div>
 
-                <!-- 3. ЛИКВИДАТОРЫ (третья панель) -->
+                <!-- 3. ЛИКВИДАТОРЫ -->
                 <div class="panel clickable" data-panel="liquidation">
                     <div class="face front paper">
                         <div class="sec-title">Ликвидаторы</div>
@@ -430,7 +431,7 @@
                     </div>
                 </div>
 
-                <!-- 4. ВЛИЯНИЕ НА ЗДОРОВЬЕ (четвёртая панель) -->
+                <!-- 4. ВЛИЯНИЕ НА ЗДОРОВЬЕ -->
                 <div class="panel clickable" data-panel="health">
                     <div class="face front paper">
                         <div class="sec-title">Влияние на здоровье</div>
@@ -447,7 +448,7 @@
                     </div>
                 </div>
 
-                <!-- 5. ЭКОЛОГИЧЕСКИЕ ПОСЛЕДСТВИЯ (пятая панель) -->
+                <!-- 5. ЭКОЛОГИЧЕСКИЕ ПОСЛЕДСТВИЯ -->
                 <div class="panel clickable" data-panel="ecology">
                     <div class="face front paper">
                         <div class="sec-title">Экологические последствия</div>
@@ -463,7 +464,7 @@
                     </div>
                 </div>
 
-                <!-- 6. ПАМЯТЬ И УРОКИ (шестая панель) -->
+                <!-- 6. ПАМЯТЬ И УРОКИ -->
                 <div class="panel clickable" data-panel="memory">
                     <div class="face front paper">
                         <div class="sec-title">Память и уроки</div>
@@ -479,15 +480,12 @@
                     </div>
                 </div>
 
-                <!-- 7. НАША ИСТОРИЯ (седьмая панель) -->
+                <!-- 7. НАША ИСТОРИЯ (без фото на закрытой панели) -->
                 <div class="panel clickable" data-panel="teacher">
                     <div class="face front paper">
                         <div class="sec-title">Наша история</div>
-                        <div class="img-container">
-                            <img src="images/teacher-photo.jpg" alt="Партыка Светлана Михайловна">
-                            <div class="img-caption">Партыка Светлана Михайловна</div>
-                        </div>
                         <p class="text" style="text-align: center; font-style: italic; color: #8b0000; font-size: clamp(0.75rem, 1.3vw, 0.95rem);">
+                            Партыка Светлана Михайловна<br>
                             Учитель русского языка и литературы<br>
                             Классный руководитель
                         </p>
@@ -627,19 +625,34 @@
             `,
             teacher: `
                 <div class="sec-title">Партыка Светлана Михайловна</div>
-                <div class="photo-item">
-                    <img src="images/teacher-school.jpg" alt="Школа">
-                    <div class="photo-caption">Школа, из которой эвакуировали детей</div>
+                
+                <!-- ФОТО 1: Светлана Михайловна (вытянутое вверх) -->
+                <div class="photo-item portrait">
+                    <img src="images/teacher-photo.jpg" alt="Партыка Светлана Михайловна">
+                    <div class="photo-caption">Партыка Светлана Михайловна</div>
                 </div>
-                <p class="text">После аварии на Чернобыльской АЭС в 1986 году, Светлана Михайловна, будучи молодым учителем, <span class="highlight">лично вывозила детей</span> на автобусе из школы, которая находилась в зоне заражения.</p>
-                <p class="text">Она не побоялась остаться в опасной зоне, чтобы убедиться, что каждый ребёнок будет спасён и эвакуирован в безопасное место. Её мужество и самоотверженность спасли десятки детских жизней.</p>
+
+                <p class="text">Сегодня она работает учителем русского языка и литературы в нашей школе и является нашим классным руководителем. Мы гордимся, что учимся у человека, который рисковал своей жизнью ради других.</p>
+
+                <p class="text">После аварии на ЧАЭС в 1986 г. Светлана Михайловна, будучи молодым учителем, участвовала в эвакуации учащихся Надточаевской восьмилетней школы, находившейся в зоне заражения.</p>
+
+                <!-- ФОТО 2: Школа -->
+                <div class="photo-item">
+                    <img src="images/teacher-school.jpg" alt="Надточаевская восьмилетняя школа">
+                    <div class="photo-caption">Надточаевская восьмилетняя школа</div>
+                </div>
+
+                <div class="quote-box">«Я просто делала то, что должна была делать. Каждый ребёнок — это чья-то жизнь, и я не могла поступить иначе.»</div>
+
+                <!-- ФОТО 3: Светлана Михайловна на остановке -->
                 <div class="photo-item">
                     <img src="images/teacher-busstop.jpg" alt="Светлана Михайловна на остановке">
                     <div class="photo-caption">Светлана Михайловна</div>
                 </div>
-                <p class="text">За свой подвиг Светлана Михайловна была награждена <span class="highlight">медалью участника ликвидации последствий аварии на Чернобыльской АЭС</span>.</p>
-                <p class="text">Сегодня она работает учителем русского языка и литературы в нашей школе и является нашим классным руководителем. Мы гордимся, что учимся у человека, который рисковал своей жизнью ради других.</p>
-                <div class="quote-box">«Я просто делала то, что должна была делать. Каждый ребёнок — это чья-то жизнь, и я не могла поступить иначе.»</div>
+
+                <p class="text">Все участники ликвидации последствий аварии на ЧАЭС были награждены медалью.</p>
+
+                <!-- ФОТО 4: Медаль -->
                 <div class="photo-item">
                     <img src="images/teacher-medal.jpg" alt="Медаль участника ликвидации последствий ЧАЭС">
                     <div class="photo-caption">Медаль участника ликвидации последствий аварии на Чернобыльской АЭС</div>
